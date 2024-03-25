@@ -12,7 +12,7 @@ interface MarkerInterface {
     id?: number,
     lat: number,
     lng: number,
-    dea: number,
+    DEA: string,
     address: string,
     comar: {
         id: number,
