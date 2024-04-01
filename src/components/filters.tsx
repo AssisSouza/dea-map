@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { Button } from "./ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
-import { Separator } from "./ui/separator"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 
 const comar = [
@@ -42,31 +42,36 @@ const gbm = [
 
 interface filterDrawerInterface {
     handleComarFilter: (id: number) => void
+    handleGBMFilter: (gbm: number) => void
 }
 
-const Filters: FC<filterDrawerInterface> = ({handleComarFilter}) => {
+const Filters: FC<filterDrawerInterface> = ({ handleComarFilter, handleGBMFilter }) => {
 
     return (
         <>
-            <div className="mt-2 mb-5">
-                <Card className="mx-2 md:mx-1 ">
-                    <CardHeader className="flex flex-row gap-2">
-                        <CardTitle>Filtros</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex flex-col gap-4">
-                        <div className="flex flex-row flex-wrap gap-2">
+            <div className="my-2">
+                <Card className="mx-2">
+                    {/* <CardHeader className="flex flex-row gap-2">
+                        <CardTitle className="text-lg">Filtros</CardTitle>
+                    </CardHeader> */}
+                    <CardContent className="flex flex-row items-center gap-4 p-4">
+                        <div className="flex flex-wrap font-bold"><h3>Filtros</h3></div>
+                        <div className="flex flex-wrap gap-2">
                             {comar.map(comar => (
                                 <Button variant="secondary" key={comar.id} onClick={() => handleComarFilter(comar.id)}>{comar.nome}</Button>
-
                             ))}
                         </div>
-
-                        <Separator />
-
-                        <div className="flex flex-row flex-wrap gap-2">
-                            {gbm.map(gbm => (
-                                <Button variant="secondary" key={gbm.id} value={gbm.id} >{gbm.nome}</Button>
-                            ))}
+                        <div className="flex flex-wrap gap-2 px-3">
+                            <Select onValueChange={(value) => { handleGBMFilter(Number(value)) }}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="GBM" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {gbm.map(gbm => (
+                                        <SelectItem key={gbm.id} value={`${gbm.id}`}>{gbm.nome}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     </CardContent>
                 </Card>

@@ -5,87 +5,44 @@ import { FC, useState } from "react";
 import Header from "./header";
 import FilterDrawerContextProvider from "@/contexts/filter-context";
 import FilterDrawer from "@/components/filterDrawer";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import Filters from "@/components/filters";
 
-interface MarkerInterface {
-    id?: number,
-    lat: number,
-    lng: number,
-    DEA: string,
-    address: string,
-    comar: {
-        id: number,
-        descr: string
-    },
-    gbm: {
-        id: number,
-        descr: string
-    }
-}
+import deaLocations from "@/data/deaLocations";
+import { MarkerInterface } from "@/interfaces/interfaces";
 
-const deaLocations: MarkerInterface[] = [
-    {
-      lat: -15.633020275933195,
-      lng: -48.02632917519532,
-      address: "Bem aqui",
-      DEA: "Zoll",
-      comar: {
-        id: 3,
-        descr: "COMAR III"
-      },
-      gbm: {
-        id: 17,
-        descr: "17º GBM"
-      }
-    },
-    {
-      lat: -15.903622638765505,
-      lng: -47.77651011943817,
-      address: "17º GBM",
-      DEA: "Zoll",
-      comar: {
-        id: 2,
-        descr: "COMAR II"
-      },
-      gbm: {
-        id: 12,
-        descr: "12º GBM"
-      }
-    },
-    {
-      lat: -15.796168187860095,
-      lng: -47.89188058289393,
-      address: "Pátio Brasil",
-      DEA: "Phillips",
-      comar: {
-        id: 2,
-        descr: "COMAR I"
-      },
-      gbm: {
-        id: 1,
-        descr: "1º GBM"
-      }
-    }
-  ]
 
 const Index: FC = () => {
 
-    const [filteredDeaStore, setFilteredDeaStore] = useState(Array<MarkerInterface>);
+  const [filteredDeaStore, setFilteredDeaStore] = useState(Array<MarkerInterface>);
 
-    const handleComarFilter = (comar: number) => {
-        const filtered = deaLocations.filter((dea: MarkerInterface) => dea.comar.id == comar);
-        setFilteredDeaStore(filtered);
-    }
+  const handleComarFilter = (comar: number) => {
+    const filtered = deaLocations.filter((dea: MarkerInterface) => dea.comar.id == comar);
+    setFilteredDeaStore(filtered);
+  }
 
+  const handleGBMFilter = (gbm: number) => {
+    const filtered = deaLocations.filter((dea: MarkerInterface) => dea.gbm.id == gbm);
+    setFilteredDeaStore(filtered);
+  }
 
-    return (
-        <div className="">
-            <FilterDrawerContextProvider>
-                <Header />
-                <FilterDrawer handleComarFilter={handleComarFilter} />
-            </FilterDrawerContextProvider>
-            <Mapa deaStore={deaLocations} filteredDeaStore={filteredDeaStore} />
-        </div>
-    )
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  return (
+    <div className="">
+      <FilterDrawerContextProvider>
+        <Header />
+        {!isDesktop &&
+          <FilterDrawer handleComarFilter={handleComarFilter} handleGBMFilter={handleGBMFilter} />
+        }
+        {isDesktop &&
+          <Filters handleComarFilter={handleComarFilter} handleGBMFilter={handleGBMFilter} />
+        }
+      </FilterDrawerContextProvider>
+      
+      <Mapa deaStore={deaLocations} filteredDeaStore={filteredDeaStore} />
+    </div>
+  )
 
 }
 

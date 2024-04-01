@@ -43,9 +43,10 @@ const gbm = [
 
 interface filterDrawerInterface {
     handleComarFilter: (id: number) => void
+    handleGBMFilter: (gbm: number) => void
 }
 
-const FilterDrawer: FC<filterDrawerInterface> = ({ handleComarFilter }) => {
+const FilterDrawer: FC<filterDrawerInterface> = ({ handleComarFilter, handleGBMFilter }) => {
 
     const { openDrawer, closeFilterDrawer } = useContext(FilterDrawerContext);
     const gbmSelect = useRef<HTMLSelectElement>();
@@ -63,7 +64,7 @@ const FilterDrawer: FC<filterDrawerInterface> = ({ handleComarFilter }) => {
                 </div>
                 <Separator className="my-4" />
                 <div className="flex flex-row flex-wrap gap-2 px-3 pb-6">
-                    <Select  onValueChange={(value) => {console.log(value)}}>
+                    <Select onValueChange={(value) => {handleGBMFilter(Number(value))}}>
                         <SelectTrigger>
                             <SelectValue placeholder="GBM" />
                         </SelectTrigger>

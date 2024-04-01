@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, ReactElement, ReactNode, createContext, useState } from "react";
+import React, { FC, createContext, useState } from "react";
 
 export const FilterDrawerContext = createContext({
     openDrawer: true,
