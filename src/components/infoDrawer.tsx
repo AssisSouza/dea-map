@@ -2,22 +2,21 @@ import { FC, useEffect, useState } from "react"
 import { Drawer, DrawerContent, DrawerHeader, DrawerOverlay, DrawerTitle } from "./ui/drawer"
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import guiaDea from "@/data/guiaDea";
-import { Separator } from "./ui/separator";
 import { MarkerInterface } from "@/interfaces/interfaces";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { motion } from "framer-motion";
 
 interface InfoDrawer {
-    deaDetails: {
-        infoOpen: boolean,
-        dea?: MarkerInterface
-    }
+    infoOpen: boolean,
+    drawerOpen: boolean,
+    deaSelected: MarkerInterface | null,
+    handleDrawerOpen: (drawer: boolean) => void
 }
 
-const InfoDrawer: FC<InfoDrawer> = (deaDetails) => {
+const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleDrawerOpen }) => {
 
     const isDesktop = useMediaQuery("(min-width: 768px)");
-    const [open, setOpen] = useState(true);
-
-    let styleDrawer = isDesktop ? 'h-[calc(100vh-9.7rem)] w-1/4 ' : 'h-[calc(100vh-5rem)]';
+    const [open, setOpen] = useState(() => (isDesktop));
 
     const handleInteractOutside = () => {
         if (isDesktop) {
@@ -26,23 +25,38 @@ const InfoDrawer: FC<InfoDrawer> = (deaDetails) => {
             setOpen(false)
         }
     }
+    useEffect(() => {
+        if (isDesktop) handleDrawerOpen(true)
+    })
 
-    console.log('deaout', deaDetails.deaDetails.dea);
+    let styleDrawer = isDesktop ? 'h-[calc(100vh-9.7rem)] w-1/4 ' : 'h-[calc(100vh-5rem)]';
+
+    const variants = {
+        open: { opacity: 1, scale: 1, display: 'hidden' },
+        closed: { opacity: 0, scale: 0, display: 'block' }
+    }
 
     return (
-        <Drawer open={open} modal={false} dismissible={!isDesktop}  >
+        <Drawer open={drawerOpen} modal={false} dismissible={!isDesktop}  >
             <DrawerOverlay className="" />
             <DrawerContent className={styleDrawer + " rounded-none shadow-sm"} onInteractOutside={handleInteractOutside} >
-                {deaDetails.deaDetails.infoOpen &&
-                    <div className="leading-7 [&:not(:first-child)]:mt-6 p-4 pt-0">
-                        <h2 className="scroll-m-20 text-xl font-semibold tracking-tight">{deaDetails.deaDetails.dea?.DEA}</h2>
-                        <p className="">{deaDetails.deaDetails.dea?.address}</p>
-                        <p>Lat: {deaDetails.deaDetails.dea?.lat}</p>
-                        <p>Lng: {deaDetails.deaDetails.dea?.lng}</p>
-                        <p>Area Atuação: {deaDetails.deaDetails.dea?.gbm.descr}</p>
-
-                        <Separator className="mt-4" />
-                    </div>
+                {infoOpen &&
+                <motion.div
+                    animate={infoOpen ? "open" : "closed"}
+                    variants={variants}
+                >
+                    <Card className="scale-100 duration-200 m-2 -mt-2 leading-7 bg-zinc-800 text-zinc-50">
+                        <CardHeader>
+                            <CardTitle>{deaSelected?.POI}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="">{deaSelected?.address}</p>
+                            <p>Lat: {deaSelected?.lat}</p>
+                            <p>Lng: {deaSelected?.lng}</p>
+                            <p>{deaSelected?.obs}</p>
+                        </CardContent>
+                    </Card>
+                </motion.div>
                 }
                 <DrawerHeader>
                     <DrawerTitle>Passo a Passo do uso do DEA</DrawerTitle>

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import InfoDrawer from "./infoDrawer";
@@ -12,30 +12,30 @@ interface MapaInterface {
     filteredDeaStore: MarkerInterface[]
 }
 
-interface deaDetailsInterface {
-    infoOpen: boolean,
-    dea?: MarkerInterface
-}
-
-
 const Mapa: FC<MapaInterface> = ({ deaStore, filteredDeaStore }) => {
 
+    const isDesktop = useMediaQuery("(min-width: 768px)");
+    const [drawerOpen, setDrawerOpen] = useState<boolean>(() => (isDesktop));
+    
+    const [deaSelected, setDeaSelected] = useState<MarkerInterface | null>(null);
+    const [infoOpen, setInfoOpen] = useState<boolean>(false);
 
-    const [deaDetails, setDeaDetails] = useState<deaDetailsInterface>({infoOpen: false});
-
+    const handleDrawerOpen = (drawer: boolean) => {
+        setDrawerOpen(drawer);
+    }
+    
     const mapRef = React.useRef<HTMLDivElement | null>(null);
-
+    
     var centerMap = useRef<google.maps.LatLng>();
     var zoomMap = useRef<number | undefined>(undefined);
 
     const handleDeaDetails = (dea: MarkerInterface) => {
-        setDeaDetails({infoOpen: true, dea})
+        setDeaSelected(dea);
+        setInfoOpen(true);
     }
-
-    const isDesktop = useMediaQuery("(min-width: 768px)");
-
+    
     const deaLocations = filteredDeaStore.length > 0 ? filteredDeaStore : deaStore;
-
+    
     const initMap = async () => {
 
         const loader = new Loader({
@@ -75,32 +75,37 @@ const Mapa: FC<MapaInterface> = ({ deaStore, filteredDeaStore }) => {
             });
 
             marker.addListener("click", () => {
-                handleDeaDetails(dea)
+                handleDeaDetails(dea);
+                setDrawerOpen(true);
+                console.log("click marker", isDesktop)
             });
 
         });
 
-        // recupera centro do mapa
         map.addListener("center_changed", () => {
             zoomMap.current = map.getZoom();
             centerMap.current = map.getCenter();
         })
+
+        map.addListener("click", () => {
+            console.log('click map', isDesktop)
+            setInfoOpen(false);
+            if (!isDesktop) setDrawerOpen(false);
+        });
     }
 
     // useEffect(() => {
-
-        initMap();
+    initMap();
     // })
 
-
-    let styleMap = isDesktop ? ' w-3/4 ml-[calc(100vw/4)]' : " ";
+    let styleMap = isDesktop ? ' h-[calc(100vh-9.8rem)] w-3/4 ml-[calc(100vw/4)] mt-[9.7rem]' : " h-[calc(100vh-4rem)]  mt-[4rem]";
 
     return (
         <div className="flex flex-col">
             <div className="">
-                <InfoDrawer deaDetails={deaDetails} />
+                <InfoDrawer deaSelected={deaSelected} drawerOpen={drawerOpen} infoOpen={infoOpen} handleDrawerOpen={handleDrawerOpen} />
             </div>
-            <div className={'h-[calc(100vh-4rem)] bottom-0 z-0 ' + styleMap} ref={mapRef} />
+            <div className={'fixed bottom-0 right-0 z-0 ' + styleMap} ref={mapRef} />
         </div>
     )
 

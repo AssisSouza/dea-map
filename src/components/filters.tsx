@@ -49,7 +49,7 @@ const Filters: FC<filterDrawerInterface> = ({ handleComarFilter, handleGBMFilter
 
     return (
         <>
-            <div className="my-2">
+            <div className="my-2 fixed mt-[4.5rem] z-20 w-full">
                 <Card className="mx-2">
                     {/* <CardHeader className="flex flex-row gap-2">
                         <CardTitle className="text-lg">Filtros</CardTitle>

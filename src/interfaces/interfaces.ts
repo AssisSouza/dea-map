@@ -2,8 +2,9 @@ interface MarkerInterface {
     id: number,
     lat: number,
     lng: number,
-    DEA: string,
+    POI: string,
     address: string,
+    obs: string,
     comar: {
         id: number,
         descr: string
@@ -18,9 +19,6 @@ interface latLngInterface {
     lat: number,
     lng: number
 }
-
-
-
 
 export type {
     MarkerInterface,
