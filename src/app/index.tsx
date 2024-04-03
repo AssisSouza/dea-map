@@ -10,6 +10,7 @@ import Filters from "@/components/filters";
 
 import deaLocations from "@/data/deaLocations";
 import { MarkerInterface } from "@/interfaces/interfaces";
+import ManualContextProvider from "@/contexts/manual-context";
 
 
 const Index: FC = () => {
@@ -30,17 +31,19 @@ const Index: FC = () => {
 
   return (
     <div className="">
-      <FilterDrawerContextProvider>
-        <Header />
-        {!isDesktop &&
-          <FilterDrawer handleComarFilter={handleComarFilter} handleGBMFilter={handleGBMFilter} />
-        }
-        {isDesktop &&
-          <Filters handleComarFilter={handleComarFilter} handleGBMFilter={handleGBMFilter} />
-        }
-      </FilterDrawerContextProvider>
-      
-      <Mapa deaStore={deaLocations} filteredDeaStore={filteredDeaStore} />
+      <ManualContextProvider>
+        <FilterDrawerContextProvider>
+          <Header />
+          {!isDesktop &&
+            <FilterDrawer handleComarFilter={handleComarFilter} handleGBMFilter={handleGBMFilter} />
+          }
+          {isDesktop &&
+            <Filters handleComarFilter={handleComarFilter} handleGBMFilter={handleGBMFilter} />
+          }
+        </FilterDrawerContextProvider>
+
+        <Mapa deaStore={deaLocations} filteredDeaStore={filteredDeaStore} />
+      </ManualContextProvider>
     </div>
   )
 

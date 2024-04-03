@@ -31,37 +31,13 @@ const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleD
 
     let styleDrawer = isDesktop ? 'h-[calc(100vh-9.7rem)] w-1/4 ' : 'h-[calc(100vh-5rem)]';
 
-    const variants = {
-        open: { opacity: 1, scale: 1, display: 'hidden' },
-        closed: { opacity: 0, scale: 0, display: 'block' }
-    }
-
     return (
         <Drawer open={drawerOpen} modal={false} dismissible={!isDesktop}  >
             <DrawerOverlay className="" />
             <DrawerContent className={styleDrawer + " rounded-none shadow-sm"} onInteractOutside={handleInteractOutside} >
-                {infoOpen &&
-                <motion.div
-                    animate={infoOpen ? "open" : "closed"}
-                    variants={variants}
-                >
-                    <Card className="scale-100 duration-200 m-2 -mt-2 leading-7 bg-zinc-800 text-zinc-50">
-                        <CardHeader>
-                            <CardTitle>{deaSelected?.POI}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="">{deaSelected?.address}</p>
-                            <p>Lat: {deaSelected?.lat}</p>
-                            <p>Lng: {deaSelected?.lng}</p>
-                            <p>{deaSelected?.obs}</p>
-                        </CardContent>
-                    </Card>
-                </motion.div>
-                }
                 <DrawerHeader>
                     <DrawerTitle>Passo a Passo do uso do DEA</DrawerTitle>
                 </DrawerHeader>
-
                 <div className="overflow-auto" dangerouslySetInnerHTML={{ __html: guiaDea }} />
             </DrawerContent>
         </Drawer>
