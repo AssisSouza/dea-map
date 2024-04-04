@@ -3,7 +3,6 @@
 import React, { FC, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import InfoDrawer from "./infoDrawer";
 
 import { latLngInterface, MarkerInterface } from "@/interfaces/interfaces";
 
@@ -15,14 +14,6 @@ interface MapaInterface {
 const Mapa: FC<MapaInterface> = ({ deaStore, filteredDeaStore }) => {
 
     const isDesktop = useMediaQuery("(min-width: 768px)");
-    const [drawerOpen, setDrawerOpen] = useState<boolean>(() => (isDesktop));
-
-    const [deaSelected, setDeaSelected] = useState<MarkerInterface | null>(null);
-    const [infoOpen, setInfoOpen] = useState<boolean>(false);
-
-    const handleDrawerOpen = (drawer: boolean) => {
-        setDrawerOpen(drawer);
-    }
 
     const mapRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -68,7 +59,7 @@ const Mapa: FC<MapaInterface> = ({ deaStore, filteredDeaStore }) => {
 
         const mapOptions: google.maps.MapOptions = {
             center: position,
-            zoom: zoomMap.current ? zoomMap.current : 11,
+            zoom: zoomMap.current ? zoomMap.current : isDesktop ? 11 : 9,
             mapId: 'MY_DEAMAPS_02'
         }
 
@@ -119,26 +110,16 @@ const Mapa: FC<MapaInterface> = ({ deaStore, filteredDeaStore }) => {
             zoomMap.current = map.getZoom();
             centerMap.current = map.getCenter();
         })
-
-        map.addListener("click", () => {
-            setInfoOpen(false);
-            if (!isDesktop) setDrawerOpen(false);
-        });
     }
 
     useEffect(() => {
         initMap();
     })
 
-    let styleMap = isDesktop ? ' h-[calc(100vh-9.8rem)] w-3/4 ml-[calc(100vw/4)] mt-[9.7rem]' : " h-[calc(100vh-4rem)]  mt-[4rem]";
+    let styleMap = isDesktop ? ' h-[calc(100vh-9.8rem)] mt-[9.7rem]' : " h-[calc(100vh-4rem)]  mt-[4rem]";
 
     return (
-        <div className="flex flex-col">
-            <div className="">
-                <InfoDrawer deaSelected={deaSelected} drawerOpen={drawerOpen} infoOpen={infoOpen} handleDrawerOpen={handleDrawerOpen} />
-            </div>
-            <div className={'fixed bottom-0 right-0 z-0 ' + styleMap} ref={mapRef} />
-        </div>
+        <div className={' fixed' + styleMap} ref={mapRef} />
     )
 
 }

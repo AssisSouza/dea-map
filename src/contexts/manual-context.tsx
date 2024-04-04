@@ -4,14 +4,15 @@ import React, { FC, createContext, useState } from "react";
 
 export const ManualContext = createContext({
     openManualDrawer: true,
-    handleOpenManualDrawer: () => {}
+    handleOpenManualDrawer: (open: boolean) => {}
 });
 
 const ManualContextProvider: FC<any> = ({children}) => {
     const [openManualDrawer, setOpenManualDrawer] = useState<boolean>(false);
 
-    const handleOpenManualDrawer = () => {
-        setOpenManualDrawer(!openManualDrawer);
+    const handleOpenManualDrawer = (open: boolean) => {
+        setOpenManualDrawer(open);
+        console.log('click', openManualDrawer)
     }
 
     return (

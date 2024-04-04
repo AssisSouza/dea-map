@@ -1,41 +1,26 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useContext } from "react"
 import { Drawer, DrawerContent, DrawerHeader, DrawerOverlay, DrawerTitle } from "./ui/drawer"
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import guiaDea from "@/data/guiaDea";
-import { MarkerInterface } from "@/interfaces/interfaces";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { motion } from "framer-motion";
 import Image from "next/image";
+import { ManualContext } from "@/contexts/manual-context";
 
 interface InfoDrawer {
-    infoOpen: boolean,
     drawerOpen: boolean,
-    deaSelected: MarkerInterface | null,
     handleDrawerOpen: (drawer: boolean) => void
 }
 
-const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleDrawerOpen }) => {
+const InfoDrawer: FC = () => {
 
     const isDesktop = useMediaQuery("(min-width: 768px)");
-    const [open, setOpen] = useState(() => (isDesktop));
 
-    const handleInteractOutside = () => {
-        if (isDesktop) {
-            setOpen(true)
-        } else {
-            setOpen(false)
-        }
-    }
-    useEffect(() => {
-        if (isDesktop) handleDrawerOpen(true)
-    })
+    const {openManualDrawer, handleOpenManualDrawer} = useContext(ManualContext);
 
-    let styleDrawer = isDesktop ? 'h-[calc(100vh-9.7rem)] w-1/4 ' : 'h-[calc(100vh-5rem)]';
+    let styleDrawer = isDesktop ? 'h-[calc(100vh-11rem)] w-4/5 mx-auto' : 'h-[calc(100vh-5rem)]';
 
     return (
-        <Drawer open={drawerOpen} modal={false} dismissible={!isDesktop}  >
+        <Drawer open={openManualDrawer} modal={false}  >
             <DrawerOverlay className="" />
-            <DrawerContent className={styleDrawer + " rounded-none shadow-sm"} onInteractOutside={handleInteractOutside} >
+            <DrawerContent className={styleDrawer + " shadow-sm"} onInteractOutside={() => handleOpenManualDrawer(false)} >
                 <DrawerHeader>
                     <DrawerTitle>Passo a Passo do uso do DEA</DrawerTitle>
                 </DrawerHeader>
@@ -79,7 +64,7 @@ const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleD
                                 alt=""
                                 className="inline mb-2 ml-1"
                             />
-                            </li>
+                        </li>
                         <ul className="list-disc list-inside mb-4 ml-4 [&>li]:mt-1">
                             <li className=" indent-8 leading-7">Ligue apertando o botão por 3 segundos, escute atentamente as instruções que serão transmitidas pelo próprio equipamento.</li>
                         </ul>
@@ -92,7 +77,7 @@ const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleD
                                 alt=""
                                 className="inline mb-2 ml-1"
                             />
-                            </li>
+                        </li>
                         <ul className="list-disc list-inside mb-4 ml-4 [&>li]:mt-1">
                             <li className=" indent-8 leading-7">Assim que for dada essa orientação pelo Dispositivo, é hora de colocar os eletrodos (adesivos) no tórax do paciente. Os aparelhos costumam ter um desenho ilustrando a posição:</li>
                             <li className=" indent-8 leading-7">Eletrodo do lado direito do paciente: deve ser colocado abaixo da clavícula;</li>
@@ -108,7 +93,7 @@ const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleD
                                 alt=""
                                 className="inline mb-2 ml-1"
                             />
-                            </li>
+                        </li>
                         <ul className="list-disc list-inside mb-4 ml-4 [&>li]:mt-1">
                             <li>Nesse momento, a instrução dada será para conectar o cabo do DEA no conector. Em seguida, o aparelho irá fazer uma análise do ritmo cardíaco.</li>
                         </ul>
@@ -121,7 +106,7 @@ const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleD
                                 alt=""
                                 className="inline mb-2 ml-1"
                             />
-                            </li>
+                        </li>
                         <ul className="list-disc list-inside mb-4 ml-4 [&>li]:mt-1">
                             <li>Após analisar, será indicado se é necessário aplicar o choque ou não.</li>
                             <li>CHOQUE NÃO INDICADO: deve-se continuar com as compressões até a chegada do socorro.</li>
@@ -136,7 +121,7 @@ const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleD
                                 alt=""
                                 className="inline mb-2 ml-1"
                             />
-                            </li>
+                        </li>
                         <ul className="list-disc list-inside mb-4 ml-4 [&>li]:mt-1">
                             <li>Pressione o botão de choque para deflagrar a descarga.</li>
                             <li>Retome as compressões torácicas imediatamente por mais 2 minutos.</li>
@@ -151,7 +136,7 @@ const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleD
                                 alt=""
                                 className="inline mb-2 ml-1"
                             />
-                            </li>
+                        </li>
                         <ul className="list-disc list-inside mb-4 ml-4 [&>li]:mt-1">
                             <li>O DEA irá dizer se o ritmo das compressões está adequado ou se precisa ser modificado (aumentar ou diminuir o ritmo, se as compressões devem ser mais profundas) e avisa quando o choque poderá ser dado.</li>
                         </ul>
@@ -164,7 +149,7 @@ const InfoDrawer: FC<InfoDrawer> = ({ deaSelected, infoOpen, drawerOpen, handleD
                                 alt=""
                                 className="inline mb-2 ml-1"
                             />
-                            </li>
+                        </li>
                         <ul className="list-disc list-inside mb-4 mt-3 ml-4 mr-0 [&>li]:mt-1 text-justify">
                             <li><span className="font-semibold">Crianças:</span> Eletrodos infantis em crianças devem ser posicionados com um eletrodo no centro do peito, e o outro nas costas, também ao centro. Acima de 8 anos utilizar como em adultos</li>
                             <li><span className="font-semibold">Situações Molhadas ou Úmidas:</span> Secar o peito ou o local antes de aplicar os eletrodos. Situações com muita água o DEA pode não ser seguro para uso.

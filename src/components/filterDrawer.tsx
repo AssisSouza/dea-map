@@ -1,7 +1,7 @@
 import { FilterDrawerContext } from "@/contexts/filter-context";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "./ui/drawer";
 import { Button } from "./ui/button";
-import { FC, useContext, useRef } from "react";
+import { FC, useContext } from "react";
 import { Separator } from "./ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
@@ -9,8 +9,7 @@ const comar = [
     { id: 1, nome: "COMAR I" },
     { id: 2, nome: "COMAR II" },
     { id: 3, nome: "COMAR III" },
-    { id: 4, nome: "COMAR IV" },
-    { id: 5, nome: "COMAR V" },
+    { id: 4, nome: "COMAR IV" }
 ]
 
 const gbm = [
@@ -49,7 +48,6 @@ interface filterDrawerInterface {
 const FilterDrawer: FC<filterDrawerInterface> = ({ handleComarFilter, handleGBMFilter }) => {
 
     const { openDrawer, closeFilterDrawer } = useContext(FilterDrawerContext);
-    const gbmSelect = useRef<HTMLSelectElement>();
 
     return (
         <Drawer open={openDrawer} modal={false} onClose={closeFilterDrawer}>
@@ -59,18 +57,18 @@ const FilterDrawer: FC<filterDrawerInterface> = ({ handleComarFilter, handleGBMF
                 </DrawerHeader>
                 <div className="flex flex-row flex-wrap gap-2 px-3 ">
                     {comar.map(comar => (
-                        <Button variant="secondary" key={comar.id} onClick={() => handleComarFilter(comar.id)}>{comar.nome}</Button>
+                        <Button variant={comar.id != 3 ? 'secondary' : 'default'} disabled={comar.id != 3} key={comar.id} onClick={() => handleComarFilter(comar.id)}>{comar.nome}</Button>
                     ))}
                 </div>
                 <Separator className="my-4" />
                 <div className="flex flex-row flex-wrap gap-2 px-3 pb-6">
-                    <Select onValueChange={(value) => {handleGBMFilter(Number(value))}}>
+                    <Select onValueChange={(value) => { handleGBMFilter(Number(value)) }}>
                         <SelectTrigger>
                             <SelectValue placeholder="GBM" />
                         </SelectTrigger>
                         <SelectContent>
                             {gbm.map(gbm => (
-                                <SelectItem key={gbm.id} value={`${gbm.id}`}>{gbm.nome}</SelectItem>
+                                <SelectItem key={gbm.id} disabled={gbm.comar != 3} value={`${gbm.id}`}>{gbm.nome}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>

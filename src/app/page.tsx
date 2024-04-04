@@ -6,9 +6,7 @@ import Index from ".";
 const Home: FC = () => {
 
     return (
-        <>
-            <Index />
-        </>
+        <Index />
     );
 }
 
