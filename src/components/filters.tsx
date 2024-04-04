@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { Button } from "./ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { Card, CardContent } from "./ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 
@@ -8,8 +8,7 @@ const comar = [
     { id: 1, nome: "COMAR I" },
     { id: 2, nome: "COMAR II" },
     { id: 3, nome: "COMAR III" },
-    { id: 4, nome: "COMAR IV" },
-    { id: 5, nome: "COMAR V" },
+    { id: 4, nome: "COMAR IV" }
 ]
 
 const gbm = [
@@ -48,35 +47,30 @@ interface filterDrawerInterface {
 const Filters: FC<filterDrawerInterface> = ({ handleComarFilter, handleGBMFilter }) => {
 
     return (
-        <>
-            <div className="my-2 fixed mt-[4.5rem] z-20 w-full">
-                <Card className="mx-2">
-                    {/* <CardHeader className="flex flex-row gap-2">
-                        <CardTitle className="text-lg">Filtros</CardTitle>
-                    </CardHeader> */}
-                    <CardContent className="flex flex-row items-center gap-4 p-4">
-                        <div className="flex flex-wrap font-bold"><h3>Filtros</h3></div>
-                        <div className="flex flex-wrap gap-2">
-                            {comar.map(comar => (
-                                <Button variant="secondary" key={comar.id} onClick={() => handleComarFilter(comar.id)}>{comar.nome}</Button>
-                            ))}
-                        </div>
-                        <div className="flex flex-wrap gap-2 px-3">
-                            <Select onValueChange={(value) => { handleGBMFilter(Number(value)) }}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="GBM" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {gbm.map(gbm => (
-                                        <SelectItem key={gbm.id} value={`${gbm.id}`}>{gbm.nome}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
-        </>
+        <div className="my-2 fixed mt-[4.5rem] z-20 w-full">
+            <Card className="mx-2">
+                <CardContent className="flex flex-row items-center gap-4 p-4">
+                    <div className="flex flex-wrap font-bold"><h3>Filtros</h3></div>
+                    <div className="flex flex-wrap gap-2">
+                        {comar.map(comar => (
+                            <Button variant={comar.id != 3 ? 'secondary' : 'default'} disabled={comar.id != 3} key={comar.id} onClick={() => handleComarFilter(comar.id)}>{comar.nome}</Button>
+                        ))}
+                    </div>
+                    <div className="flex flex-wrap gap-2 px-3">
+                        <Select onValueChange={(value) => { handleGBMFilter(Number(value)) }}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="GBM" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {gbm.map(gbm => (
+                                    <SelectItem disabled={gbm.comar != 3} key={gbm.id} value={`${gbm.id}`}>{gbm.nome}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
     )
 }
 

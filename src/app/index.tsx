@@ -15,18 +15,18 @@ import ManualContextProvider from "@/contexts/manual-context";
 
 const Index: FC = () => {
 
-  const [filteredDeaStore, setFilteredDeaStore] = useState(Array<MarkerInterface>);
-
+  const [filteredDeaStore, setFilteredDeaStore] = useState<Array<MarkerInterface> | null>(null);
+  
   const handleComarFilter = (comar: number) => {
     const filtered = deaLocations.filter((dea: MarkerInterface) => dea.comar.id == comar);
     setFilteredDeaStore(filtered);
   }
-
+  
   const handleGBMFilter = (gbm: number) => {
     const filtered = deaLocations.filter((dea: MarkerInterface) => dea.gbm.id == gbm);
     setFilteredDeaStore(filtered);
   }
-
+  
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (

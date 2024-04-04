@@ -9,7 +9,7 @@ import { latLngInterface, MarkerInterface } from "@/interfaces/interfaces";
 
 interface MapaInterface {
     deaStore: MarkerInterface[],
-    filteredDeaStore: MarkerInterface[]
+    filteredDeaStore: MarkerInterface[] | null
 }
 
 const Mapa: FC<MapaInterface> = ({ deaStore, filteredDeaStore }) => {
@@ -32,21 +32,22 @@ const Mapa: FC<MapaInterface> = ({ deaStore, filteredDeaStore }) => {
     const contentString = (dea: MarkerInterface) => {
         const contentString =
             '<div id="" class="pr-3 pb-3 leading-5" >' +
-                '<div id="">' +
-                "</div>" +
-                '<h1 id="" class="font-bold text-base p-0">' + dea.POI + '</h1>' +
-                '<div id="">' +
-                    '<p class="text-zinc-700 text-sm pb-1">' + dea.obs + '</p>' +
-                    '<p className="">'+ dea.address +'</p>' +
-                    '<p class="leading-4">Lat: ' + dea.lat + '<br />' +
-                    'Lng: ' + dea.lng + '</p>' +
-                "</div>" +
+            '<div id="">' +
+            "</div>" +
+            '<h1 id="" class="font-bold text-base p-0">' + dea.POI + '</h1>' +
+            '<div id="">' +
+            '<p class="text-zinc-700 text-sm pb-1">' + dea.obs + '</p>' +
+            '<p className="">' + dea.address + '</p>' +
+            '<p class="leading-4">Lat: ' + dea.lat + '<br />' +
+            'Lng: ' + dea.lng + '</p>' +
+            "</div>" +
             "</div>";
 
         return contentString;
     }
 
-    const deaLocations = filteredDeaStore.length > 0 ? filteredDeaStore : deaStore;
+
+    const deaLocations = filteredDeaStore !== null ? filteredDeaStore : deaStore;
 
     const initMap = async () => {
 
@@ -98,8 +99,6 @@ const Mapa: FC<MapaInterface> = ({ deaStore, filteredDeaStore }) => {
             infoWindowArray.push(infoWindow);
 
             marker.addListener("click", () => {
-                //handleDeaDetails(dea);
-                // setDrawerOpen(true);
                 infoWindowArray.map((info) => {
                     info.close();
                 })
@@ -122,15 +121,14 @@ const Mapa: FC<MapaInterface> = ({ deaStore, filteredDeaStore }) => {
         })
 
         map.addListener("click", () => {
-            console.log('click map', isDesktop)
             setInfoOpen(false);
             if (!isDesktop) setDrawerOpen(false);
         });
     }
 
-    // useEffect(() => {
-    initMap();
-    // })
+    useEffect(() => {
+        initMap();
+    })
 
     let styleMap = isDesktop ? ' h-[calc(100vh-9.8rem)] w-3/4 ml-[calc(100vw/4)] mt-[9.7rem]' : " h-[calc(100vh-4rem)]  mt-[4rem]";
 
