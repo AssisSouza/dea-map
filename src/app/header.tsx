@@ -59,7 +59,7 @@ export default function Header() {
                         className="mr-2"
 
                     />
-                    Passo a Passo do uso do DEA
+                    Passo a Passo para uso do DEA
                 </Button>
             }
         </div>

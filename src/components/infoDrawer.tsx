@@ -22,7 +22,7 @@ const InfoDrawer: FC = () => {
             <DrawerOverlay className="" />
             <DrawerContent className={styleDrawer + " shadow-sm"} onInteractOutside={() => handleOpenManualDrawer(false)} >
                 <DrawerHeader>
-                    <DrawerTitle>Passo a Passo do uso do DEA</DrawerTitle>
+                    <DrawerTitle>Passo a Passo para uso do DEA</DrawerTitle>
                 </DrawerHeader>
                 <div className="overflow-auto p-4">
                     <ol className="list-decimal list-inside mb-4 mx-4 [&>li]:mb-1 [&>li]:font-semibold text-justify">
