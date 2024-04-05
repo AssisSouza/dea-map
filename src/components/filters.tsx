@@ -47,7 +47,7 @@ interface filterDrawerInterface {
 const Filters: FC<filterDrawerInterface> = ({ handleComarFilter, handleGBMFilter }) => {
 
     return (
-        <div className="-mt-[5.2rem] fixed z-20 w-full">
+        <div className="-mt-[5.2rem] fixed  w-full">
             <Card className="mx-2">
                 <CardContent className="flex flex-row items-center gap-4 p-4">
                     <div className="flex flex-wrap font-bold"><h3>Filtros</h3></div>
