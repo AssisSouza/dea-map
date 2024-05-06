@@ -183,7 +183,7 @@ const deaLocations: MarkerInterface[] = [
         lng: -47.6644216123802244,
         address: "QUADRA 44/45 Área Especial Bairro Nossa Senhora de Fátima - Planaltina, Brasília - DF",
         obs: "3,2 km do GBM mais próximo",
-        POI: "UNIDADE DE INTERNAÇÃO DE SÃO SEBASTIÃO",
+        POI: "UNIDADE DE INTERNAÇÃO DE PLANALTINA",
         comar: {
             id: 3,
             descr: "COMAR III"
